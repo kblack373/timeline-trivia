@@ -1,0 +1,7 @@
+Unnecessary files(?)
+
+--one of these two 'test' directories is probably necessary since we dont want to keep re-configuring tests to run this. for now.
+app/src/androidTest
+app/src/test
+--I think these only need to be kept locally:
+app/build
