@@ -16,6 +16,11 @@ public class QuestionMaster {
 
     protected QuestionMaster(){
         QuestionAndAnswerList = new HashMap<>();
+        /*
+             I wonder if it's worth keeping two copies of each question in QuestionAndAnswerList and QuestionKey
+             Maybe this should be [QuestionKey -> Answer] rather than [Question -> Answer]
+             TODO: talk this structure out
+         */
         QuestionIterator = new ArrayList<>();
         QuestionKey = new HashMap<>();
     }
@@ -25,19 +30,26 @@ public class QuestionMaster {
             return false;
         }
 
-        Integer i = QuestionKey.get(Question);
+        //Integer i = QuestionKey.get(Question);
         HashSet<String> Answers;
 
-        if (i == null){
-            i = QuestionIterator.size() + 1;
+        if (!QuestionKey.containsKey(Question)){
+            //if the question doesn't exist yet:
+            Integer i = QuestionIterator.size() + 1; //guarantees index/key value hasn't been used before
             Answers = new HashSet<>();
             Answers.add(Answer);
+            //put the question in there, with a guaranteed new index value
             QuestionAndAnswerList.put(Question, Answers);
             QuestionKey.put(Question, i);
             QuestionIterator.add(Question);
         }else{
+
+            //the question exists, but we're going to add a new answer
             Answers = QuestionAndAnswerList.get(Question);
             Answers.add(Answer);
+
+            //kb: not sure what's going on below here
+            //TODO: josh will comment this.
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 QuestionAndAnswerList.replace(Question, Answers);
             }else{

@@ -29,5 +29,9 @@ Created in Android Studio. Major project file structure
         - activity_main > Currently the only working page in the project
 
 ## TODO short(ish) term
-    - [] Verify Code can work on other machines
-    - [] General file cleanup and gitignore population
+    - [x] Verify Code can work on other machines
+         -kb: the app runs, and buttons are displayed. Questions do not always display, I added a task for this in Trello. 
+
+    - [~] General file cleanup and gitignore population
+         -kb: I made a /proj directory to track any project management stuff, which I'm including this under. Please review the file_cleanup.txt file to see how much I guessed right.
+               I don't think any of the gradle files need to be excluded or cleaned, outside the generated /app/build files. 

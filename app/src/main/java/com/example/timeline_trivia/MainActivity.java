@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    //button labels
     String EnterText = "Submit";
     String QuestionButtonText = "Prompt";
     String ExitText = "Exit";
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Create Helper classes
 
-//this will likely be database lookups and I put too much thought into this.
+        //this will likely be database lookups and I put too much thought into this.
         QuestionMaster Q = ExampleQuestions();
 
         //Ask Next Question
