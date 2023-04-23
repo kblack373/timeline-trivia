@@ -1,7 +1,5 @@
 package com.example.timeline_trivia;
 
-import android.os.Build;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,10 +15,14 @@ public class QuestionMaster {
     protected QuestionMaster(){
         QuestionAndAnswerList = new HashMap<>();
         /*
-             I wonder if it's worth keeping two copies of each question in QuestionAndAnswerList and QuestionKey
+             KB - I wonder if it's worth keeping two copies of each question in QuestionAndAnswerList and QuestionKey
              Maybe this should be [QuestionKey -> Answer] rather than [Question -> Answer]
              TODO: talk this structure out
+
+            JDL - Right now the question IS the key for these structures. The QuestionKey structure maps to the index of the array map
          */
+
+
         QuestionIterator = new ArrayList<>();
         QuestionKey = new HashMap<>();
     }
@@ -47,15 +49,7 @@ public class QuestionMaster {
             //the question exists, but we're going to add a new answer
             Answers = QuestionAndAnswerList.get(Question);
             Answers.add(Answer);
-
-            //kb: not sure what's going on below here
-            //TODO: josh will comment this.
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                QuestionAndAnswerList.replace(Question, Answers);
-            }else{
-                QuestionAndAnswerList.remove(Question);
-                QuestionAndAnswerList.put(Question, Answers);
-            }
+            QuestionAndAnswerList.replace(Question, Answers);
         }
 
         return true;
@@ -77,15 +71,12 @@ public class QuestionMaster {
             Answers = QuestionAndAnswerList.get(Question);
             //For each answer in the answer parameter
             Collections.addAll(Answers, Answer);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                QuestionAndAnswerList.replace(Question, Answers);
-            }else{
-                QuestionAndAnswerList.remove(Question);
-                QuestionAndAnswerList.put(Question, Answers);
-            }
+            QuestionAndAnswerList.replace(Question, Answers);
         }
     }
 
+    //TODO:Consider alternatives since timing is unknown
+    //Option - When a database is implemented, questions can be removed directly and the overall structure wiped and reloaded in bulk
     protected void RemoveQuestion(String Question){
         Integer index = QuestionKey.get(Question);
 
