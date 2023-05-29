@@ -29,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
     String CorrectResponse = "That's Correct!";
     String IncorrectResponse = "Sorry, try another one!";
 
+    //kb added this for integer-key conversion
+    Question nowQuestion = new Question();
+
     Boolean QuestionMasterResponse;
 
     EditText UserInput;
@@ -68,14 +71,16 @@ public class MainActivity extends AppCompatActivity {
         QuestionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Solution.setText("");
-                Prompt.setText(Q.NextQuestion());
+                nowQuestion = Q.NextQuestion();
+                String qText = nowQuestion.getQuestionText();
+                Prompt.setText(qText);
             }
         });
 
         //Submit Guess
         EnterButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                QuestionMasterResponse = Q.CheckAnswer(Prompt.getText().toString(), (UserInput.getText().toString()));
+                QuestionMasterResponse = Q.CheckAnswer(nowQuestion.getIndex(), (UserInput.getText().toString()));
 
                 if (QuestionMasterResponse) {
                     Solution.setText(CorrectResponse);
