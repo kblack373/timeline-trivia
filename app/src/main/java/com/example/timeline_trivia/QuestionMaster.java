@@ -1,7 +1,5 @@
 package com.example.timeline_trivia;
 
-import android.os.Build;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,6 +21,14 @@ public class QuestionMaster {
 
     protected QuestionMaster(){
         AnswerKey = new HashMap<>();
+        QuestionAndAnswerList = new HashMap<>();
+        /*
+             KB - I wonder if it's worth keeping two copies of each question in QuestionAndAnswerList and QuestionKey
+             Maybe this should be [QuestionKey -> Answer] rather than [Question -> Answer]
+             TODO: talk this structure out
+
+            JDL - Right now the question IS the key for these structures. The QuestionKey structure maps to the index of the array map
+         */
         QuestionIterator = new ArrayList<>();
         QuestionKey = new HashMap<>();
     }
@@ -50,7 +56,6 @@ public class QuestionMaster {
             //the question exists, but we're going to change the answer
             Answers = AnswerKey.get(nowQuestion);
             Answers.add(Answer);
-
             //kb: not sure what's going on below here
             //TODO: josh will comment this.
             //kb - oh, is this just a compoatibility issue with android or the java sdk?
@@ -60,6 +65,7 @@ public class QuestionMaster {
                 AnswerKey.remove(nowQuestion);
                 AnswerKey.put(i, Answers);
             }
+            QuestionAndAnswerList.replace(Question, Answers);
         }
 
         return true;
@@ -81,19 +87,30 @@ public class QuestionMaster {
             Answers = AnswerKey.get(i);
             //For each answer in the answer parameter
             Collections.addAll(Answers, Answer);
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 AnswerKey.replace(i, Answers);
             }else{
                 AnswerKey.remove(nowQuestion);
                 AnswerKey.put(i, Answers);
             }
+
+            QuestionAndAnswerList.replace(Question, Answers);
+
         }
         else{
             throw new RuntimeException("Key exists in QuestionKey but not AnswerKey");
         }
     }
 
+
     protected String RemoveQuestion (int index, String removedQ){
+
+    //TODO:Consider alternatives since timing is unknown
+    //Option - When a database is implemented, questions can be removed directly and the overall structure wiped and reloaded in bulk
+    protected void RemoveQuestion(String Question){
+        Integer index = QuestionKey.get(Question);
+
 
         if (removedQ != QuestionKey.get(index)) {
             return ""; //does not delete anything if it can't verify
